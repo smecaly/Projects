@@ -1,0 +1,24 @@
+[
+ {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "vpcb"
+   },
+   {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "t2.micro"
+   },
+  {
+    "ParameterKey": "AvailabilityZone",
+    "ParameterValue": "us-east-1a"
+  },
+  {
+    "ParameterKey": "SSHLocation",
+    "ParameterValue" : "0.0.0.0/0"
+  },
+  {
+    "ParameterKey":"ImageId",
+    "ParameterValue":"ami-0b69ea66ff7391e80"
+  }
+
+
+]

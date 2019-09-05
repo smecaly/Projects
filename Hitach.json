@@ -1,0 +1,104 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This cloud formation template will create a VPC, Subnet and configure and instance that will be used for word press set up",
+
+    "Parameters": {
+      "KeyName":{
+        "Description": "Name of the EC2 KeyPair to enable SSH access to the instance",
+        "Type": "AWS::EC2::KeyPair::KeyName",
+        "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+      },
+      "InstanceType" : {
+        "Description" : "WebServer EC2 instance type",
+        "Type" : "String",
+        "Default" : "t2.small",
+        "AllowedValues" : ["t2.micro", "t2.small"],
+        "ConstraintDescription" : "must be a valid EC2 instance type."
+      },
+      "AvailabilityZone":{
+        "Description":"Availability zone to be used for the subnet",
+        "Type":"AWS::EC2::AvailabilityZone::Name"
+      },
+      "SSHLocation": {
+        "Description": "The IP address range that can be used to SSH to the EC2 instances",
+        "Type": "String",
+        "MinLength": "9",
+        "MaxLength": "18",
+        "Default": "0.0.0.0/0",
+        "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+        "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+      },
+      "ImageId": {
+        "Description":"The AMI ID to be used for the WP server instances",
+        "Type":"String",
+        "ConstraintDescription":"Must be a valid AMIid"
+      }
+
+    },
+    "Resources": {
+      "WpVPC": {
+        "Type": "AWS::EC2::VPC",
+        "Properties": {
+          "CidrBlock": "10.0.0.0/16",
+          "EnableDnsSupport":"true",
+          "EnableDnsHostnames" : "true",
+          "InstanceTenancy" : "default",
+          "Tags": [{"Key":"Name" , "Value":"Wordpress"}]
+        }
+      },
+      "WpSubnet": {
+        "Type": "AWS::EC2::Subnet",
+        "Properties": {
+          "AvailabilityZone": {"Ref":"AvailabilityZone"},
+          "VpcId": {"Ref":"WpVPC"},
+          "CidrBlock": "10.0.0.0/24",
+          "Tags": [{"Key":"Name", "Value":"Wordpress"}]
+        }
+      },
+      "WpSecurityGroup" : {
+        "Type" : "AWS::EC2::SecurityGroup",
+        "Properties" : {
+          "GroupDescription" : "Enable HTTP access via port 80 and SSH access if needed",
+          "SecurityGroupIngress" : [
+            {"IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"},
+            {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"}}
+          ],
+          "VpcId" : {"Ref":"WpVPC"},
+          "Tags" :  [ {"Key":"Name" , "Value":"Wordpress"}]
+        }
+      },
+      "WpEC2Instance": {
+          "Type": "AWS::EC2::Instance",
+          "Properties": {
+              "KeyName": {"Ref":"KeyName"},
+              "DisableApiTermination": "false",
+              "ImageId": { "Ref":"ImageId" },
+              "SubnetId" : {"Ref":"WpSubnet"},
+              "InstanceType": {"Ref":"InstanceType"},
+              "Monitoring": "false",
+              "SecurityGroupIds" : [ {"Ref" : "WpSecurityGroup"} ],
+              "Tags": [
+                  {
+                      "Key": "Name",
+                      "Value": "Wordpress"
+                  }
+              ],
+              "UserData": {
+                  "Fn::Base64": {
+                      "Fn::Join": [
+                          "",
+                          [
+                              "#!/bin/bash -ex",
+                              "-"
+                          ]
+                      ]
+                  }
+              }
+      }
+              }
+
+    },
+    "Outputs": {
+
+    }
+}
