@@ -2,8 +2,6 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "This cloud formation template will create a VPC, Subnet and configure and instance that will be used for word press set up",
 
-    "Parameters": {
-    },
     "Resources": {
       "WpVPC": {
         "Type": "AWS::EC2::VPC",
