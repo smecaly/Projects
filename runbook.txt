@@ -1,0 +1,16 @@
+sudo useradd ansible
+sudo passwd ansible
+sudo vi /etc/ssh/sshd_config
+sudo service sshd restart
+sudo yum install epel-release
+sudo yum install ansible
+sudo vi /etc/sudoers
+sudo usermod -aG wheel ansible
+SU - ansible
+cd /etc/ansible
+sudo vi ansible.cfg
+sudo vi /etc/ansible/hosts
+ssh-keygen -t rsa
+chmod 700 .ssh/
+chown ansible:ansible .ssh/
+ssh-copy-id -I ansible@public Ip of slave node
