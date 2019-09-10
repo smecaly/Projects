@@ -1,31 +1,35 @@
 [
  {
-    "ParameterKey": "KeyName",
-    "ParameterValue": "vpcb"
+    "ParameterKey": "VPCCidr",
+    "ParameterValue": "10.0.0.0/16"
    },
    {
-    "ParameterKey": "InstanceType",
-    "ParameterValue": "t2.micro"
-   },
-  {
     "ParameterKey": "AvailabilityZone",
     "ParameterValue": "us-east-1a"
+   },
+  {
+    "ParameterKey": "subnetCidr",
+    "ParameterValue" : "10.0.0.0/24"
   },
   {
-    "ParameterKey": "SSHLocation",
-    "ParameterValue" : "0.0.0.0/0"
+    "ParameterKey":"SSHLocation",
+    "ParameterValue":"0.0.0.0/0"
+  },
+  {
+    "ParameterKey":"KeyName",
+    "ParameterValue":"vpcb"
+  },
+  {
+    "ParameterKey":"ImageIdMaster",
+    "ParameterValue":"ami-02eac2c0129f6376b"
   },
   {
     "ParameterKey":"ImageId",
     "ParameterValue":"ami-0b69ea66ff7391e80"
   },
   {
-    "ParameterKey":"VPCCidr",
-    "ParameterValue":"10.0.0.0/16"
-  },
-  {
-    "ParameterKey":"subnetCidr",
-    "ParameterValue":"10.0.0.0/24"
+    "ParameterKey":"InstanceType",
+    "ParameterValue":"t2.micro"
   }
 
 ]
